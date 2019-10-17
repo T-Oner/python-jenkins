@@ -111,7 +111,7 @@ DELETE_JOB = '%(folder_url)sjob/%(short_name)s/doDelete'
 ENABLE_JOB = '%(folder_url)sjob/%(short_name)s/enable'
 DISABLE_JOB = '%(folder_url)sjob/%(short_name)s/disable'
 SET_JOB_BUILD_NUMBER = '%(folder_url)sjob/%(short_name)s/nextbuildnumber/submit'
-COPY_JOB = '%(from_folder_url)screateItem?name=%(to_short_name)s&mode=copy&from=%(from_short_name)s'
+COPY_JOB = '%(to_folder_url)screateItem?name=%(to_short_name)s&mode=copy&from=%(from_name)s'
 RENAME_JOB = '%(from_folder_url)sjob/%(from_short_name)s/doRename?newName=%(to_short_name)s'
 BUILD_JOB = '%(folder_url)sjob/%(short_name)s/build'
 STOP_BUILD = '%(folder_url)sjob/%(short_name)s/%(number)s/stop'
@@ -1052,10 +1052,6 @@ class Jenkins(object):
         '''
         from_folder_url, from_short_name = self._get_job_folder(from_name)
         to_folder_url, to_short_name = self._get_job_folder(to_name)
-        if from_folder_url != to_folder_url:
-            raise JenkinsException('copy[%s to %s] failed, source and destination '
-                                   'folder must be the same' % (from_name, to_name))
-
         self.jenkins_open(requests.Request(
             'POST', self._build_url(COPY_JOB, locals())
         ))
